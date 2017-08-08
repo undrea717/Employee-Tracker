@@ -1,0 +1,11 @@
+.jumbotrons {
+	background-color: black;
+	color: white;
+	text-align: center;
+	font-style: "Arial", sans-serif;
+}
+
+#employeeInfo {
+
+	margin: auto;
+}
