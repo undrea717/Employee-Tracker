@@ -15,43 +15,64 @@
 var names = "";
 var roles = "";
 var start = "";
-// var months = $("#months").val().trim();
+var months = "";
 var mRate = "";
-// var billed = $("#billed").val().trim();
+var billed = "";
 
 var database = firebase.database();
 
+var timeDiff = function(start, end) {
+
+    return moment(new Date(end)).diff(new Date(start), "months", true);
+
+  }
  
 // when you click it runs the table
 $("#submitF").on("click", function() {
 
   event.preventDefault();
 
+  today = moment().format("DD-MM-YY");
   names = $("#name").val().trim();
   roles = $("#role").val().trim();
   start = $("#start").val().trim();
-
+  months = Math.floor(timeDiff(start, today));
   mRate = $("#mrate").val().trim();
+  billed = (months * mRate);
 
-  console.log(names);
+
+
+  $("#employeeInfo").append("<tr><td>" + names + "</td><td>" + roles + "</td><td>" + start + "</td><td>" + months + "</td><td>" + mRate + "</td><td>" + billed + "</td></tr>") ;
+
+
+  console.log(months);
+  console.log(billed);
 
 database.ref().push({
    name: names,
   role: roles,
   start: start,
-  // months: months,
-  monthly_rate: mrate,
-
-
+  months: months,
+  monthly_rate: mRate,
+  billed: billed,
+ 
 
 });
-
-  
-
-  alert("hi");
-  
-  
+ // alert("hi");
 });
+ database.ref().on("child_added", function(childSnapshot) {
+
+  $("#employeeInfo").append("<tr><td>" + childSnapshot.val().name + "</td><td>" + childSnapshot.val().role + "</td><td>" + childSnapshot.val().start + "</td><td>" + childSnapshot.val().months + "</td><td>" + childSnapshot.val().monthly_rate + "</td><td>" + childSnapshot.val().billed + "</td></tr>") ;
+
+
+
+
+  
+
+
+})
+
+
 
 });
 
